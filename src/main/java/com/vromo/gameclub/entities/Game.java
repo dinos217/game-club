@@ -2,8 +2,8 @@ package com.vromo.gameclub.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "game")
@@ -22,11 +22,11 @@ public class Game implements Serializable {
     @Column(name = "is_loaned", nullable = false)
     private Short isLoaned;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "game_genre",
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    private List<Genre> genres = new ArrayList<>();
+    private Set<Genre> genres = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -60,11 +60,11 @@ public class Game implements Serializable {
         this.isLoaned = isLoaned;
     }
 
-    public List<Genre> getGenres() {
+    public Set<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<Genre> genres) {
+    public void setGenres(Set<Genre> genres) {
         this.genres = genres;
     }
 }

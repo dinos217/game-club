@@ -6,7 +6,7 @@ import com.vromo.gameclub.entities.Game;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface GameGameDtoMapper {
+public interface GameMapper {
 
     GameDto gameToGameDto(Game game);
     Game gameDtoToGame(GameRequestDto gameDto);

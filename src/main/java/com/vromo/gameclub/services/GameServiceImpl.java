@@ -7,13 +7,14 @@ import com.vromo.gameclub.entities.Genre;
 import com.vromo.gameclub.enums.GameStatus;
 import com.vromo.gameclub.exceptions.ResourceAlreadyExistsException;
 import com.vromo.gameclub.exceptions.ResourceNotFoundException;
-import com.vromo.gameclub.mappers.GameGameDtoMapper;
+import com.vromo.gameclub.mappers.GameMapper;
 import com.vromo.gameclub.repositories.GameRepository;
 import com.vromo.gameclub.repositories.GenreRepository;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class GameServiceImpl implements GameService {
 
     private GameRepository gameRepository;
     private GenreRepository genreRepository;
-    private GameGameDtoMapper gameGameDtoMapper = Mappers.getMapper(GameGameDtoMapper.class);
+    private GameMapper gameMapper = Mappers.getMapper(GameMapper.class);
 
     @Autowired
     public GameServiceImpl(GameRepository gameRepository, GenreRepository genreRepository) {
@@ -33,23 +34,20 @@ public class GameServiceImpl implements GameService {
     @Override
     public GameDto save(GameRequestDto gameRequestDto) {
 
-        Optional<Game> gameInDb = gameRepository.findByTitleAndStudio(gameRequestDto.getTitle(), gameRequestDto.getStudio());
+        Optional<Game> gameOptional = gameRepository.findByTitleAndStudio(gameRequestDto.getTitle(),
+                gameRequestDto.getStudio());
 
-        if (gameInDb.isPresent()) {
+        if (gameOptional.isPresent()) {
             throw new ResourceAlreadyExistsException("Game with title: " + gameRequestDto.getTitle() +
                     " and studio: " + gameRequestDto.getStudio() + " already exists.");
         }
 
-        Game game = gameGameDtoMapper.gameDtoToGame(gameRequestDto);
-        game.setIsLoaned(GameStatus.NOT_LOANED.getCode());
-        game.setGenres(gameRequestDto.getGameGenres().stream()
-                .map(genre -> genreRepository.findByGenreName(genre))
-                .collect(Collectors.toList()));
+        Game savedGame = gameRepository.save(buildGameToBeSaved(gameRequestDto));
 
-        Game savedGame = gameRepository.save(game);
-        GameDto gameDto = gameGameDtoMapper.gameToGameDto(savedGame);
+        GameDto gameDto = gameMapper.gameToGameDto(savedGame);
         gameDto.setGameGenres(savedGame.getGenres().stream()
-                .map(Genre::getGenreName).collect(Collectors.toList()));
+                .map(Genre::getGenreName)
+                .collect(Collectors.toCollection(HashSet::new)));
 
         return gameDto;
     }
@@ -57,12 +55,29 @@ public class GameServiceImpl implements GameService {
     @Override
     public void remove(Long id) {
 
-        Optional<Game> game = gameRepository.findById(id);
+        Optional<Game> gameOptional = gameRepository.findById(id);
 
-        if (game.isPresent()) {
-            gameRepository.delete(game.get());
+        if (gameOptional.isPresent()) {
+            gameRepository.delete(gameOptional.get());
         } else {
             throw new ResourceNotFoundException("Could not find game with id: " + id);
         }
+    }
+
+    private Game buildGameToBeSaved(GameRequestDto gameRequestDto) {
+        Game gameToBeSaved = gameMapper.gameDtoToGame(gameRequestDto);
+        gameToBeSaved.setIsLoaned(GameStatus.NOT_LOANED.getCode());
+
+        //save genres that user entered which are not in db
+        for (String genreName : gameRequestDto.getGameGenres()) {
+            if (genreRepository.findByGenreName(genreName).isEmpty()) {
+                genreRepository.save(new Genre(genreName));
+            }
+        }
+
+        gameToBeSaved.setGenres(gameRequestDto.getGameGenres().stream()
+                .map(genre -> genreRepository.findByGenreName(genre).get())
+                .collect(Collectors.toCollection(HashSet::new)));
+        return gameToBeSaved;
     }
 }

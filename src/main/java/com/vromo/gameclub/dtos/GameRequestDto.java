@@ -1,12 +1,13 @@
 package com.vromo.gameclub.dtos;
 
 import java.util.List;
+import java.util.Set;
 
 public class GameRequestDto {
 
     private String title;
     private String studio; //todo: make it enum?
-    private List<String> gameGenres;
+    private Set<String> gameGenres;
 
     public String getTitle() {
         return title;
@@ -24,11 +25,11 @@ public class GameRequestDto {
         this.studio = studio;
     }
 
-    public List<String> getGameGenres() {
+    public Set<String> getGameGenres() {
         return gameGenres;
     }
 
-    public void setGameGenres(List<String> gameGenres) {
+    public void setGameGenres(Set<String> gameGenres) {
         this.gameGenres = gameGenres;
     }
 }

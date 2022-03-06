@@ -1,15 +1,21 @@
 package com.vromo.gameclub.entities;
 
-import lombok.Data;
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "genre")
 public class Genre {
 
+    public Genre() {
+
+    }
+
+    public Genre(String genreName) {
+        this.genreName = genreName;
+    }
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

@@ -1,13 +1,14 @@
 package com.vromo.gameclub.dtos;
 
 import java.util.List;
+import java.util.Set;
 
 public class GameDto {
 
     private Long id;
     private String title;
     private String studio;
-    private List<String> gameGenres;
+    private Set<String> gameGenres;
 
     public GameDto() {
     }
@@ -36,11 +37,11 @@ public class GameDto {
         this.studio = studio;
     }
 
-    public List<String> getGameGenres() {
+    public Set<String> getGameGenres() {
         return gameGenres;
     }
 
-    public void setGameGenres(List<String> gameGenres) {
+    public void setGameGenres(Set<String> gameGenres) {
         this.gameGenres = gameGenres;
     }
 }
