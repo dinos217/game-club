@@ -6,6 +6,7 @@ import com.vromo.gameclub.entities.Game;
 import com.vromo.gameclub.entities.Rental;
 import com.vromo.gameclub.enums.GameStatus;
 import com.vromo.gameclub.exceptions.BadRequestException;
+import com.vromo.gameclub.exceptions.InvalidRequestException;
 import com.vromo.gameclub.exceptions.ResourceNotFoundException;
 import com.vromo.gameclub.mappers.RentalMapper;
 import com.vromo.gameclub.repositories.GameRepository;
@@ -62,7 +63,7 @@ public class RentalServiceImpl implements RentalService {
             return rentalMapper.rentalToRentalDto(rental);
 
         } else {
-            throw new BadRequestException("Member with id: " + requestDto.getMemberId()
+            throw new InvalidRequestException("Member with id: " + requestDto.getMemberId()
                     + "has reached the maximum number of rentals (3 games)");
         }
     }

@@ -1,7 +1,8 @@
 package com.vromo.gameclub.dtos;
 
-import java.time.LocalDate;
+import lombok.Builder;
 
+@Builder
 public class RentalRequestDto {
 
     private Long memberId;

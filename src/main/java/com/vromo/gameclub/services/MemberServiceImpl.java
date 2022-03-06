@@ -3,6 +3,7 @@ package com.vromo.gameclub.services;
 import com.vromo.gameclub.dtos.MemberDto;
 import com.vromo.gameclub.dtos.MemberRequestDto;
 import com.vromo.gameclub.entities.Member;
+import com.vromo.gameclub.exceptions.InvalidRequestException;
 import com.vromo.gameclub.exceptions.ResourceNotFoundException;
 import com.vromo.gameclub.mappers.MemberMapper;
 import com.vromo.gameclub.repositories.MemberRepository;
@@ -25,6 +26,11 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDto save(MemberRequestDto memberRequestDto) {
+
+        if (memberRepository.existsByEmail(memberRequestDto.getEmail())) {
+            throw new InvalidRequestException("Member with email: "
+                    + memberRequestDto.getEmail() + " already exists.");
+        }
 
         Member member = memberMapper.memberRequestDtoToMember(memberRequestDto);
         return memberMapper.memberToMemberDto(memberRepository.save(member));

@@ -1,5 +1,8 @@
 package com.vromo.gameclub.dtos;
 
+import lombok.Builder;
+
+@Builder
 public class GenreDto {
 
     private Long id;

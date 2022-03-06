@@ -1,8 +1,10 @@
 package com.vromo.gameclub.dtos;
 
-import java.util.List;
+import lombok.Builder;
+
 import java.util.Set;
 
+@Builder
 public class GameRequestDto {
 
     private String title;

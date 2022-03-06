@@ -5,7 +5,7 @@ import com.vromo.gameclub.dtos.GameRequestDto;
 import com.vromo.gameclub.entities.Game;
 import com.vromo.gameclub.entities.Genre;
 import com.vromo.gameclub.enums.GameStatus;
-import com.vromo.gameclub.exceptions.ResourceAlreadyExistsException;
+import com.vromo.gameclub.exceptions.InvalidRequestException;
 import com.vromo.gameclub.exceptions.ResourceNotFoundException;
 import com.vromo.gameclub.mappers.GameMapper;
 import com.vromo.gameclub.repositories.GameRepository;
@@ -38,7 +38,7 @@ public class GameServiceImpl implements GameService {
                 gameRequestDto.getStudio());
 
         if (gameOptional.isPresent()) {
-            throw new ResourceAlreadyExistsException("Game with title: " + gameRequestDto.getTitle() +
+            throw new InvalidRequestException("Game with title: " + gameRequestDto.getTitle() +
                     " and studio: " + gameRequestDto.getStudio() + " already exists.");
         }
 
