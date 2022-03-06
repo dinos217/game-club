@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RentalRepository extends JpaRepository<Rental, Long> {
+
+    Short countByMemberIdAndGameStatus(Long memberId, Short gameStatus);
 }

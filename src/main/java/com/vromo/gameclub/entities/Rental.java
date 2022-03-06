@@ -1,7 +1,5 @@
 package com.vromo.gameclub.entities;
 
-import lombok.Data;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -9,12 +7,17 @@ import java.io.Serializable;
 @Table(name = "rental")
 public class Rental implements Serializable {
 
+//    public Rental() {}
+//
+//    public Rental(Long memberId, Long gameId) {
+//        this.memberId = memberId;
+//        this.gameId = gameId;
+//    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "member_id")
     @Column(name = "member_id")
     private Long memberId;
 
@@ -28,7 +31,7 @@ public class Rental implements Serializable {
 //    private Double charge;
 
     @Column(name = "game_status", nullable = false)
-    private String gameStatus; //todo: make it char and assign a char to enum ?
+    private Short gameStatus;
 
     public Long getId() {
         return id;
@@ -54,11 +57,11 @@ public class Rental implements Serializable {
         this.gameId = gameId;
     }
 
-    public String getGameStatus() {
+    public Short getGameStatus() {
         return gameStatus;
     }
 
-    public void setGameStatus(String gameStatus) {
+    public void setGameStatus(Short gameStatus) {
         this.gameStatus = gameStatus;
     }
 }

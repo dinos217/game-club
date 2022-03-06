@@ -1,8 +1,7 @@
 package com.vromo.gameclub.controllers;
 
-import com.vromo.gameclub.dtos.GameDto;
-import com.vromo.gameclub.dtos.GameRequestDto;
 import com.vromo.gameclub.dtos.RentalDto;
+import com.vromo.gameclub.dtos.RentalRequestDto;
 import com.vromo.gameclub.services.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,10 +23,19 @@ public class RentalController {
         this.rentalService = rentalService;
     }
 
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<RentalDto> save(@RequestBody GameRequestDto gameRequestDto) {
+    @PostMapping(value = "/loan", consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<RentalDto> loanGame(@RequestBody RentalRequestDto rentalRequestDto) {
 
-//        GameDto gameDto = rentalService.save(gameRequestDto);
-        return null;
+        RentalDto rentalDto = rentalService.loanGame(rentalRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(rentalDto);
+    }
+
+    @PostMapping(value = "/return", consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<RentalDto> returnGame(@RequestBody RentalRequestDto rentalRequestDto) {
+
+        RentalDto rentalDto = rentalService.returnGame(rentalRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(rentalDto);
     }
 }
