@@ -17,9 +17,6 @@ public class Rental implements Serializable {
     @Column(name = "game_id", nullable = false)
     private Long gameId;
 
-    @Column(name = "game_status", nullable = false)
-    private Short gameStatus;
-
     public Long getId() {
         return id;
     }
@@ -44,11 +41,4 @@ public class Rental implements Serializable {
         this.gameId = gameId;
     }
 
-    public Short getGameStatus() {
-        return gameStatus;
-    }
-
-    public void setGameStatus(Short gameStatus) {
-        this.gameStatus = gameStatus;
-    }
 }

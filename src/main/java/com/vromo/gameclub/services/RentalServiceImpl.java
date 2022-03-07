@@ -48,12 +48,10 @@ public class RentalServiceImpl implements RentalService {
             throw new BadRequestException("Game with id: " + requestDto.getGameId() + " is not available.");
         }
 
-        Short rentalsCount = rentalRepository.countByMemberIdAndGameStatus(requestDto.getMemberId(),
-                GameStatus.LOANED.getCode());
+        Short rentalsCount = rentalRepository.countByMemberId(requestDto.getMemberId());
 
         if (rentalsCount < MAX_RENTALS) {
             Rental rental = rentalMapper.rentalRequestDtoToRental(requestDto);
-            rental.setGameStatus(GameStatus.LOANED.getCode());
             rentalRepository.save(rental);
 
             //update game record with proper game status
@@ -71,9 +69,10 @@ public class RentalServiceImpl implements RentalService {
     @Override
     public RentalDto returnGame(RentalRequestDto rentalRequestDto) {
 
-        Rental rental = rentalMapper.rentalRequestDtoToRental(rentalRequestDto);
-        rental.setGameStatus(GameStatus.NOT_LOANED.getCode());
-        rentalRepository.save(rental);
+        Rental rental = rentalRepository.
+                findByMemberIdAndGameId(rentalRequestDto.getMemberId(), rentalRequestDto.getGameId());
+
+        rentalRepository.delete(rental);
 
         //update game record with proper game status
         Game game = gameRepository.getById(rentalRequestDto.getGameId());

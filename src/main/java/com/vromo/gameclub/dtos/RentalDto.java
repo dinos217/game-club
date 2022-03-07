@@ -5,7 +5,6 @@ public class RentalDto {
     private Long id;
     private Long memberId;
     private Long gameId;
-    private String gameStatus;
 
     public Long getId() {
         return id;
@@ -29,13 +28,5 @@ public class RentalDto {
 
     public void setGameId(Long gameId) {
         this.gameId = gameId;
-    }
-
-    public String getGameStatus() {
-        return gameStatus;
-    }
-
-    public void setGameStatus(String gameStatus) {
-        this.gameStatus = gameStatus;
     }
 }
