@@ -1,14 +1,11 @@
 package com.vromo.gameclub.dtos;
 
-import lombok.Builder;
-
 import java.util.Set;
 
-@Builder
 public class GameRequestDto {
 
     private String title;
-    private String studio; //todo: make it enum?
+    private String studio;
     private Set<String> gameGenres;
 
     public String getTitle() {

@@ -1,16 +1,10 @@
 package com.vromo.gameclub.dtos;
 
-import lombok.Builder;
-
-@Builder
 public class RentalDto {
 
     private Long id;
     private Long memberId;
     private Long gameId;
-//    private LocalDate startDate;
-//    private LocalDate endDate;
-//    private Double charge;
     private String gameStatus;
 
     public Long getId() {

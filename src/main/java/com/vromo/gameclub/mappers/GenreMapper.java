@@ -8,5 +8,4 @@ import org.mapstruct.Mapper;
 public interface GenreMapper {
 
     GenreDto genreToGenreDto(Genre genre);
-    Genre genreDtoToGenre(GenreDto genreDto);
 }

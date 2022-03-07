@@ -1,8 +1,5 @@
 package com.vromo.gameclub.dtos;
 
-import lombok.Builder;
-
-@Builder
 public class MemberDto {
 
     private Long id;

@@ -9,6 +9,5 @@ import org.mapstruct.Mapper;
 public interface RentalMapper {
 
     RentalDto rentalToRentalDto(Rental rental);
-    Rental rentalDtoToRental(RentalDto rentalDto);
     Rental rentalRequestDtoToRental(RentalRequestDto rentalDto);
 }

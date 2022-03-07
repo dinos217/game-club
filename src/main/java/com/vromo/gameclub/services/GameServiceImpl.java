@@ -42,7 +42,8 @@ public class GameServiceImpl implements GameService {
                     " and studio: " + gameRequestDto.getStudio() + " already exists.");
         }
 
-        Game savedGame = gameRepository.save(buildGameToBeSaved(gameRequestDto));
+        Game gameToBeSaved = buildGameToBeSaved(gameRequestDto);
+        Game savedGame = gameRepository.save(gameToBeSaved);
 
         GameDto gameDto = gameMapper.gameToGameDto(savedGame);
         gameDto.setGameGenres(savedGame.getGenres().stream()
@@ -76,7 +77,7 @@ public class GameServiceImpl implements GameService {
         }
 
         gameToBeSaved.setGenres(gameRequestDto.getGameGenres().stream()
-                .map(genre -> genreRepository.findByGenreName(genre).get())
+                .map(genre -> genreRepository.findByGenreName(genre).orElse(null))
                 .collect(Collectors.toCollection(HashSet::new)));
         return gameToBeSaved;
     }

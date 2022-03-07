@@ -9,6 +9,5 @@ import org.mapstruct.Mapper;
 public interface MemberMapper {
 
     MemberDto memberToMemberDto(Member member);
-    Member memberDtoToMember(MemberDto memberDto);
     Member memberRequestDtoToMember(MemberRequestDto memberRequestDto);
 }

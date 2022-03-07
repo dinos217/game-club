@@ -7,13 +7,6 @@ import java.io.Serializable;
 @Table(name = "rental")
 public class Rental implements Serializable {
 
-//    public Rental() {}
-//
-//    public Rental(Long memberId, Long gameId) {
-//        this.memberId = memberId;
-//        this.gameId = gameId;
-//    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,12 +16,6 @@ public class Rental implements Serializable {
 
     @Column(name = "game_id", nullable = false)
     private Long gameId;
-
-//    private LocalDate startDate;
-//
-//    private LocalDate endDate;
-//
-//    private Double charge;
 
     @Column(name = "game_status", nullable = false)
     private Short gameStatus;

@@ -1,10 +1,7 @@
 package com.vromo.gameclub.dtos;
 
-import lombok.Builder;
-
 import java.util.Set;
 
-@Builder
 public class GameDto {
 
     private Long id;
