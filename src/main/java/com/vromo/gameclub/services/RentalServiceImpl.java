@@ -12,6 +12,8 @@ import com.vromo.gameclub.mappers.RentalMapper;
 import com.vromo.gameclub.repositories.GameRepository;
 import com.vromo.gameclub.repositories.RentalRepository;
 import org.mapstruct.factory.Mappers;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ import java.util.Optional;
 @Service
 public class RentalServiceImpl implements RentalService {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     private static final Short MAX_RENTALS = 3;
 
     private GameRepository gameRepository;
@@ -38,6 +41,7 @@ public class RentalServiceImpl implements RentalService {
         Optional<Game> gameOptional = gameRepository.findById(requestDto.getGameId());
 
         if (gameOptional.isEmpty()) {
+            logger.info("Game with id: " + requestDto.getGameId() + " does not exist in database.");
             throw new ResourceNotFoundException("Game with id: " + requestDto.getGameId()
                     + " does not exist in database.");
         }
@@ -45,6 +49,7 @@ public class RentalServiceImpl implements RentalService {
         Game game = gameOptional.get();
 
         if (game.getIsLoaned().equals(GameStatus.LOANED.getCode())) {
+            logger.info("Game with id: " + requestDto.getGameId() + " is not available.");
             throw new BadRequestException("Game with id: " + requestDto.getGameId() + " is not available.");
         }
 
@@ -58,27 +63,37 @@ public class RentalServiceImpl implements RentalService {
             game.setIsLoaned(GameStatus.LOANED.getCode());
             gameRepository.save(game);
 
+            logger.info("SUCCESS: Member: " + requestDto.getMemberId() + " just loaned game: " + game.getTitle());
             return rentalMapper.rentalToRentalDto(rental);
 
         } else {
+            logger.info("Member with id: " + requestDto.getMemberId() + " has reached the maximum number of rentals");
             throw new InvalidRequestException("Member with id: " + requestDto.getMemberId()
                     + "has reached the maximum number of rentals (3 games)");
         }
     }
 
     @Override
-    public RentalDto returnGame(RentalRequestDto rentalRequestDto) {
+    public RentalDto returnGame(RentalRequestDto requestDto) {
 
-        Rental rental = rentalRepository.
-                findByMemberIdAndGameId(rentalRequestDto.getMemberId(), rentalRequestDto.getGameId());
+        Optional<Rental> rental = rentalRepository.
+                findByMemberIdAndGameId(requestDto.getMemberId(), requestDto.getGameId());
 
-        rentalRepository.delete(rental);
+        if (rental.isPresent()) {
+            rentalRepository.delete(rental.get());
 
-        //update game record with proper game status
-        Game game = gameRepository.getById(rentalRequestDto.getGameId());
-        game.setIsLoaned(GameStatus.NOT_LOANED.getCode());
-        gameRepository.save(game);
+            //update game record with proper game status
+            Game game = gameRepository.getById(requestDto.getGameId());
+            game.setIsLoaned(GameStatus.NOT_LOANED.getCode());
+            gameRepository.save(game);
 
-        return rentalMapper.rentalToRentalDto(rental);
+            logger.info("SUCCESS: Member: " + requestDto.getMemberId() + " just returned game: " + game.getTitle());
+            return rentalMapper.rentalToRentalDto(rental.get());
+        } else {
+            logger.info("Member: " + requestDto.getMemberId() + " has not rented game: "
+                    + requestDto.getMemberId());
+            throw new InvalidRequestException("Member " + requestDto.getMemberId() + " has not rented game: "
+                    + requestDto.getMemberId());
+        }
     }
 }

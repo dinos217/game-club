@@ -11,5 +11,5 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
 
     Short countByMemberId(Long memberId);
 
-    Rental findByMemberIdAndGameId(Long memberId, Long gameId);
+    Optional<Rental> findByMemberIdAndGameId(Long memberId, Long gameId);
 }
