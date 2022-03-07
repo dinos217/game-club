@@ -18,5 +18,5 @@ Now the application listens to your `localhost:8080`.
 
 ## Understanding and Testing the application
 The documentation and the endpoints collection were exported from Postman. 
-- Here you may find the [Documentation]  //TODO: Documentation
-- and the [Postman Collection].
+- Here you may find the [Documentation](https://documenter.getpostman.com/view/7555836/UVsEUoz9)
+- and the [Postman Collection](https://github.com/dinos217/game-club/files/8200686/GameClub.Endpoints.postman_collection.zip).
