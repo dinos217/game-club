@@ -3,7 +3,7 @@ Spring Boot application that demonstrates a game renting system.
 It is written using Java 17 and the services are exposed with a REST API.
 
 ## Getting Started
-In order to build and run this application locally, you need to have [jdk 17](https://www.oracle.com/java/technologies/downloads).
+In order to build and run this application locally, you need to have a PostgreSQL database set up and [jdk 17](https://www.oracle.com/java/technologies/downloads).
 If you haven't done this before, [here is](https://www.geeksforgeeks.org/how-to-set-java-path-in-windows-and-linux/) a quick guide to follow after installing a new Java version.
 
 ### Database 
