@@ -9,6 +9,8 @@ If you haven't done this before, [here is](https://www.geeksforgeeks.org/how-to-
 ### Database 
 This application uses a PostgreSQL db. Once you have it installed you may run the queries found in this [script](https://github.com/dinos217/game-club/files/8201414/postgres-gameclub-init-script.txt) to build your schema and tables.
 
+*ΝΟΤΕ: Since this is an application which is built to run locally you can always use whatever database credentials you like and then configure accordingly* `spring.datasource.username` & `spring.datasource.password` *in* `src/main/resources/application.properties` *file*.
+
 ### Get the application up & running 
 Once the application is succesfully loaded in your IDE you can:
 - spring-boot:run from maven plugins or
