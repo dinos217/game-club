@@ -9,7 +9,7 @@
         <version>2.6.4</version>
     </parent>
 
-    <groupId>com.vromo</groupId>
+    <groupId>com.project</groupId>
     <artifactId>gameclub</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>gameclub</name>

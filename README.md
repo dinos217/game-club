@@ -12,7 +12,7 @@ This application uses a PostgreSQL db. Once you have it installed you may run th
 ### Get the application up & running 
 Once the application is succesfully loaded in your IDE you can:
 - spring-boot:run from maven plugins or
-- run the main method in com.vromo.gameclub.GameclubApplication
+- run the main method in GameclubApplication
 
 Now the application listens to your `localhost:8080`.
 
