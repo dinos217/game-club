@@ -14,7 +14,7 @@ This application uses a [PostgreSQL](https://www.enterprisedb.com/downloads/post
 ### Get the application up & running 
 Once the application is successfully loaded in your IDE you can:
 - `spring-boot:run` from maven plugins or
-- run the main method in `com.vromo.gameclub.GameclubApplication`
+- run the main method in `com.project.gameclub.GameclubApplication`
 
 Now the application listens to your `localhost:8080`.
 
