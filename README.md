@@ -7,7 +7,7 @@ In order to build and run this application locally, you need to have a PostgreSQ
 If you haven't done this before, [here is](https://www.geeksforgeeks.org/how-to-set-java-path-in-windows-and-linux/) a quick guide to follow after installing a new Java version.
 
 ### Database 
-This application uses a [PostgreSQL](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) db. Once you have it installed and created the database, you may run the queries found in this [script](https://github.com/dinos217/game-club/files/8201414/postgres-gameclub-init-script.txt) to build your schema and tables.
+This application uses a [PostgreSQL](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads) db. Once you have it installed and created the database, you may run the queries found in this [script](https://github.com/dinos217/game-club/files/8305260/postgres-gameclub-init-script.txt) to build your schema and tables.
 
 *ΝΟΤΕ: Since this is an application which is built to run locally you can always use whatever database credentials you like and then configure accordingly* `spring.datasource.username` & `spring.datasource.password` *in* `src/main/resources/application.properties` *file*.
 
