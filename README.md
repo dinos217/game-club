@@ -1,4 +1,4 @@
-# GameClub
+# GameClub [WIP]
 Spring Boot application that demonstrates a game renting system.
 It is written using Java 17 and the services are exposed with a REST API.
 
