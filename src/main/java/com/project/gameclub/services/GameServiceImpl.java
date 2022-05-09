@@ -48,6 +48,14 @@ public class GameServiceImpl implements GameService {
                     " and studio: " + gameRequestDto.getStudio() + " already exists.");
         }
 
+        //save genres that user entered which are not in db
+        for (String genreName : gameRequestDto.getGameGenres()) {
+            if (genreRepository.findByGenreName(genreName).isEmpty()) {
+                logger.info("Saved genre: " + genreName + " which did not exist in db.");
+                genreRepository.save(new Genre(genreName));
+            }
+        }
+
         Game gameToBeSaved = buildGameToBeSaved(gameRequestDto);
         Game savedGame = gameRepository.save(gameToBeSaved);
         logger.info("SUCCESS: Game with title: " + gameRequestDto.getTitle() + " and studio: "
@@ -62,7 +70,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void remove(Long id) {
+    public void delete(Long id) {
 
         Optional<Game> gameOptional = gameRepository.findById(id);
 
@@ -77,14 +85,6 @@ public class GameServiceImpl implements GameService {
     private Game buildGameToBeSaved(GameRequestDto gameRequestDto) {
         Game gameToBeSaved = gameMapper.gameDtoToGame(gameRequestDto);
         gameToBeSaved.setIsLoaned(GameStatus.NOT_LOANED.getCode());
-
-        //save genres that user entered which are not in db
-        for (String genreName : gameRequestDto.getGameGenres()) {
-            if (genreRepository.findByGenreName(genreName).isEmpty()) {
-                logger.info("Saved genre: " + genreName + " which did not exist in db.");
-                genreRepository.save(new Genre(genreName));
-            }
-        }
 
         gameToBeSaved.setGenres(gameRequestDto.getGameGenres().stream()
                 .map(genre -> genreRepository.findByGenreName(genre).orElse(null))

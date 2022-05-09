@@ -7,6 +7,6 @@ public interface GameService {
 
     GameDto save(GameRequestDto gameRequestDto);
 
-    void remove(Long id);
+    void delete(Long id);
 
 }
