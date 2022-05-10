@@ -1,5 +1,6 @@
 import com.project.gameclub.dtos.RentalRequestDto
 import com.project.gameclub.entities.Game
+import com.project.gameclub.enums.GameStatus
 import com.project.gameclub.repositories.GameRepository
 import com.project.gameclub.repositories.RentalRepository
 import com.project.gameclub.services.RentalService
@@ -31,7 +32,20 @@ class RentalServiceSpec extends Specification {
 
     def "try renting a game which is already rented"() {
 
+        given: "a game which exists db but is loaned"
+        RentalRequestDto rentalRequestDto = new RentalRequestDto()
+        rentalRequestDto.setGameId(1L)
+        Game rentedGame = new Game()
+        rentedGame.setIsLoaned(GameStatus.LOANED.code)
 
+
+        when: "loanGame method is called"
+        service.loanGame(rentalRequestDto)
+
+        then:
+        1 * service.gameRepository.findById(1L) >> Optional.of(rentedGame)
+        Exception ex = thrown()
+        ex.getMessage() == "Game with id: 1 is not available."
 
     }
 
