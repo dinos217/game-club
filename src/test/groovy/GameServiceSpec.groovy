@@ -1,6 +1,7 @@
 import com.project.gameclub.dtos.GameDto
 import com.project.gameclub.dtos.GameRequestDto
 import com.project.gameclub.entities.Game
+import com.project.gameclub.entities.Genre
 import com.project.gameclub.repositories.GameRepository
 import com.project.gameclub.repositories.GenreRepository
 import com.project.gameclub.services.GameService
@@ -14,26 +15,51 @@ class GameServiceSpec extends Specification {
 
     GameService service = new GameServiceImpl(gameRepository, genreRepository)
 
-    def "save a new game"() {
+    def "save a new game with an existing genre in db"() {
 
         Set genres = new HashSet<>()
         genres.add("Role Playing")
 
-        given: "any new game"
-        GameRequestDto gameRequestDto = Mock(GameRequestDto)
-        GameDto gameDto = Mock(GameDto)
+        given: "a new game with an existing genre in db"
+        GameRequestDto gameRequestDto = new GameRequestDto()
+        gameRequestDto.setGameGenres(genres)
         Game game = new Game()
         Optional<Game> gameOpt = Optional.empty()
-
-        gameRequestDto.setGameGenres(genres)
+        Genre genre = new Genre()
+        genre.setGenreName("Kids")
 
         when: "the repo method is called"
         service.save(gameRequestDto)
 
         then: ""
+        //how to test optional empty (line 53)
+        1 * service.genreRepository.findByGenreName("Kids") >> null
+        1 * service.genreRepository.save(genre)
+        1 * service.genreRepository.findByGenreName("Kids") >> Optional.of(genre)
         1 * service.gameRepository.findByTitleAndStudio(_, _) >> gameOpt
         1 * service.gameRepository.save(_) >> game
+    }
 
+    def "save a new game with a genre not in db"() {
+
+        Set genres = new HashSet<>()
+        genres.add("Role Playing")
+
+        given: "a new game with a genre not in db"
+        GameRequestDto gameRequestDto = new GameRequestDto()
+        gameRequestDto.setGameGenres(genres)
+        Game game = new Game()
+        Optional<Game> gameOpt = Optional.empty()
+        Genre genre = new Genre()
+        genre.setGenreName("Role Playing")
+
+        when: "the repo method is called"
+        service.save(gameRequestDto)
+
+        then: ""
+        2 * service.genreRepository.findByGenreName("Role Playing") >> Optional.of(genre)
+        1 * service.gameRepository.findByTitleAndStudio(_, _) >> gameOpt
+        1 * service.gameRepository.save(_) >> game
     }
 
     def "delete an existing game"() {
