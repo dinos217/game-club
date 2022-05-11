@@ -1,22 +1,28 @@
 package com.project.gameclub.services;
 
+import com.project.gameclub.dtos.GameDto;
 import com.project.gameclub.dtos.GameRequestDto;
 import com.project.gameclub.entities.Game;
 import com.project.gameclub.entities.Genre;
+import com.project.gameclub.enums.GameStatus;
 import com.project.gameclub.exceptions.InvalidRequestException;
 import com.project.gameclub.exceptions.ResourceNotFoundException;
-import com.project.gameclub.repositories.GameRepository;
-import com.project.gameclub.dtos.GameDto;
-import com.project.gameclub.enums.GameStatus;
 import com.project.gameclub.mappers.GameMapper;
+import com.project.gameclub.repositories.GameRepository;
 import com.project.gameclub.repositories.GenreRepository;
 import org.mapstruct.factory.Mappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -80,6 +86,23 @@ public class GameServiceImpl implements GameService {
         } else {
             throw new ResourceNotFoundException("Could not find game with id: " + id);
         }
+    }
+
+    @Override
+    public Page<GameDto> findAll(Pageable pageable) {
+
+        Page<Game> gamesFromDb = gameRepository.findAll(pageable);
+        List<GameDto> games = new ArrayList<>();
+        long total = 0L;
+
+        if (!ObjectUtils.isEmpty(gamesFromDb)) total = gameRepository.count();
+
+        for (Game game : gamesFromDb) {
+            GameDto gameDto = gameMapper.gameToGameDto(game);
+            games.add(gameDto);
+        }
+
+        return new PageImpl<>(games, pageable, total);
     }
 
     private Game buildGameToBeSaved(GameRequestDto gameRequestDto) {
