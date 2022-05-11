@@ -18,7 +18,7 @@ class GameServiceSpec extends Specification {
     def "save a new game with an existing genre in db"() {
 
         Set genres = new HashSet<>()
-        genres.add("Role Playing")
+        genres.add("Action")
 
         given: "a new game with an existing genre in db"
         GameRequestDto gameRequestDto = new GameRequestDto()
@@ -26,17 +26,14 @@ class GameServiceSpec extends Specification {
         Game game = new Game()
         Optional<Game> gameOpt = Optional.empty()
         Genre genre = new Genre()
-        genre.setGenreName("Kids")
+        genre.setGenreName("Action")
 
         when: "the repo method is called"
         service.save(gameRequestDto)
 
         then: ""
-        //how to test optional empty (line 53)
-        1 * service.genreRepository.findByGenreName("Kids") >> null
-        1 * service.genreRepository.save(genre)
-        1 * service.genreRepository.findByGenreName("Kids") >> Optional.of(genre)
         1 * service.gameRepository.findByTitleAndStudio(_, _) >> gameOpt
+        2 * service.genreRepository.findByGenreName("Action") >> Optional.of(genre)
         1 * service.gameRepository.save(_) >> game
     }
 
@@ -49,7 +46,6 @@ class GameServiceSpec extends Specification {
         GameRequestDto gameRequestDto = new GameRequestDto()
         gameRequestDto.setGameGenres(genres)
         Game game = new Game()
-        Optional<Game> gameOpt = Optional.empty()
         Genre genre = new Genre()
         genre.setGenreName("Role Playing")
 
@@ -58,7 +54,7 @@ class GameServiceSpec extends Specification {
 
         then: ""
         2 * service.genreRepository.findByGenreName("Role Playing") >> Optional.of(genre)
-        1 * service.gameRepository.findByTitleAndStudio(_, _) >> gameOpt
+        1 * service.gameRepository.findByTitleAndStudio(_, _) >> Optional.empty()
         1 * service.gameRepository.save(_) >> game
     }
 
