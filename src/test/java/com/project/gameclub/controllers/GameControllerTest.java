@@ -6,12 +6,14 @@ import com.project.gameclub.dtos.GameDto;
 import com.project.gameclub.dtos.GameRequestDto;
 import com.project.gameclub.exceptions.InvalidRequestException;
 import com.project.gameclub.services.GameServiceImpl;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -63,6 +65,15 @@ public class GameControllerTest extends BasicTestConfig {
         mockMvc.perform(mockRequest)
                 .andExpect(status().isConflict())
                 .andDo(print());
+    }
+
+    @Ignore //remove @Ignore if saveGameTest() has previously run and check database for valid id
+    @Test
+    public void deleteGameTest() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/games/25"))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     private GameDto buildGameDto(Set genres) {
