@@ -29,7 +29,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void remove(Long id) {
+    public void delete(Long id) {
         Optional<Genre> genreOptional = genreRepository.findById(id);
 
         if (genreOptional.isPresent()) {

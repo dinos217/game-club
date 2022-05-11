@@ -19,14 +19,14 @@ public class Game implements Serializable {
     @Column(name = "studio", nullable = false)
     private String studio;
 
-    @Column(name = "is_loaned", nullable = false)
-    private Short isLoaned;
-
     @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "game_genre",
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres = new HashSet<>();
+
+    @Column(name = "is_loaned", nullable = false)
+    private Short isLoaned;
 
     public Long getId() {
         return id;

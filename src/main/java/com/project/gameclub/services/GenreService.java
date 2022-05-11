@@ -6,5 +6,5 @@ public interface GenreService {
 
     GenreDto save(String genreName);
 
-    void remove(Long id);
+    void delete(Long id);
 }

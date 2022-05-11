@@ -38,7 +38,7 @@ public class GameController {
 
         logger.info("Started deleting game from database...");
 
-        gameService.remove(id);
+        gameService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
