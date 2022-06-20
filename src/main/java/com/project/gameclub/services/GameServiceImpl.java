@@ -20,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -92,15 +91,13 @@ public class GameServiceImpl implements GameService {
     public Page<GameDto> findAll(Pageable pageable) {
 
         Page<Game> gamesFromDb = gameRepository.findAll(pageable);
-        List<GameDto> games = new ArrayList<>();
         long total = 0L;
 
         if (!ObjectUtils.isEmpty(gamesFromDb)) total = gameRepository.count();
 
-        for (Game game : gamesFromDb) {
-            GameDto gameDto = gameMapper.gameToGameDto(game);
-            games.add(gameDto);
-        }
+        List<GameDto> games = gamesFromDb.stream()
+                .map(game -> gameMapper.gameToGameDto(game))
+                .collect(Collectors.toList());
 
         return new PageImpl<>(games, pageable, total);
     }
