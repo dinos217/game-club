@@ -37,6 +37,18 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public MemberDto update(Long id, MemberRequestDto memberRequestDto) {
+
+        Optional<Member> memberOptional = memberRepository.findById(id);
+        if (memberOptional.isEmpty()) {
+            throw new ResourceNotFoundException("Could not find member with id: " + id);
+        }
+        Member member = memberMapper.memberRequestDtoToMember(memberRequestDto);
+        member.setId(id);
+        return memberMapper.memberToMemberDto(memberRepository.save(member));
+    }
+
+    @Override
     public void delete(Long id) {
 
         Optional<Member> memberOptional = memberRepository.findById(id);

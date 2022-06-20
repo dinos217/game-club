@@ -27,8 +27,16 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(memberDto);
     }
 
-    @DeleteMapping
-    public ResponseEntity delete(Long id) {
+    @PutMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<MemberDto> update(@PathVariable Long id,
+                                            @RequestBody MemberRequestDto memberRequestDto) {
+
+        MemberDto memberDto = memberService.update(id, memberRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).body(memberDto);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity delete(@PathVariable Long id) {
 
         memberService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
