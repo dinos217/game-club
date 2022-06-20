@@ -80,8 +80,8 @@ public class GameServiceImpl implements GameService {
         Optional<Game> gameOptional = gameRepository.findById(id);
 
         if (gameOptional.isPresent()) {
-            logger.info("SUCCESS: Game with id: " + id + " deleted from database.");
             gameRepository.delete(gameOptional.get());
+            logger.info("SUCCESS: Game with id: " + id + " deleted from database.");
         } else {
             throw new ResourceNotFoundException("Could not find game with id: " + id);
         }

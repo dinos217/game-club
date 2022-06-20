@@ -34,7 +34,7 @@ public class GameController {
                           @RequestParam String sortBy,
                           @RequestParam String direction) {
 
-        logger.info("Started finding all games paged");
+        logger.info("Started finding all games paged...");
 
         Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
         Pageable pageable = PageRequest.of(page, pageSize, sort);
