@@ -41,7 +41,7 @@ public class RentalController {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<RentalDto> returnGame(@RequestBody RentalRequestDto rentalRequestDto) {
 
-        logger.info("Start of deleting game...");
+        logger.info("Start of returning loaned game...");
 
         RentalDto rentalDto = rentalService.returnGame(rentalRequestDto);
         return ResponseEntity.status(HttpStatus.OK).body(rentalDto);
