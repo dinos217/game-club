@@ -19,7 +19,7 @@ public class Game implements Serializable {
     @Column(name = "studio", nullable = false)
     private String studio;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "game_genre",
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
