@@ -19,7 +19,6 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private MemberRepository memberRepository;
     private MemberMapper memberMapper = Mappers.getMapper(MemberMapper.class);
 
@@ -61,6 +60,6 @@ public class MemberServiceImpl implements MemberService {
             throw new ResourceNotFoundException("Could not find member with id: " + id);
         }
         memberRepository.delete(memberOptional.get());
-//        logger.info("Member with id: " + id + " was deleted successfully.");
+        logger.info("Member with id: " + id + " was deleted successfully.");
     }
 }
